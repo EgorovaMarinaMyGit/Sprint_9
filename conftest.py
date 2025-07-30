@@ -10,34 +10,21 @@ from locators.login_page_locators import LoginPageLocators
 from data import LOGIN_PAGE_URL, email, password
 
 
-
-# для браузера + выход
-@pytest.fixture
-def driver():
-    firefox = webdriver.Firefox()
-    firefox.maximize_window()
-    yield firefox
-    firefox.quit()
-
-
-
-
-
 # вспомогательная функция для настройки браузера
-#def get_default_chrome_options():
-    #options = webdriver.ChromeOptions()
-    #options.add_argument("--no-sandbox")
-    #return options
+def get_default_chrome_options():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--no-sandbox")
+    return options
 
 # фикстура для браузера + выход
-#@pytest.fixture
-#def driver():
-    #server = 'http://selenoid:4444/wd/hub'
-    #options = get_default_chrome_options()
-    #driver = webdriver.Remote(command_executor=server, options=options)
-    #driver.maximize_window()
-    #yield driver
-    #driver.quit()
+@pytest.fixture
+def driver():
+    server = 'http://selenoid:4444/wd/hub'
+    options = get_default_chrome_options()
+    driver = webdriver.Remote(command_executor=server, options=options)
+    driver.maximize_window()
+    yield driver
+    driver.quit()
 
 
 # фикстура для страницы создания аккаунта
@@ -110,5 +97,4 @@ def generate_recipe_data():
     grams =  random.randint(1, 100)
     time_cooking = random.randint(1, 100)
     description = generate_random_string(20)
-
     return recipe_name, grams, time_cooking, description
