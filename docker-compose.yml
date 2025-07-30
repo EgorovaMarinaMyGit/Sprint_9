@@ -51,4 +51,4 @@ services:
 
   networks:
     selenoid:
-    name: selenoid
+        name: selenoid
