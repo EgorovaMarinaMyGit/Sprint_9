@@ -34,7 +34,7 @@ services:
 
   test:
     build: .
-    container_name: test_docker
+    container_name: test
     # Какие контейнеры нужно запустить до старта этого контейнера:
     depends_on:
       - selenoid
