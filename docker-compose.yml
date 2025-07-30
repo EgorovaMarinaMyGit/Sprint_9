@@ -17,13 +17,9 @@ services:
       - selenoid
     # Какой volume подключить для этого контейнера
     volumes:
-      - ./selenoid/browser.json:/etc/selenoid/browser.json    #тут должен лежать browsers.json с настройками браузера
-      - /var/run/docker.sock:/var/run/docker.sock
-      #- "/c/etc/selenoid/video:/opt/selenoid/video"
-      #- "/c/etc/selenoid/logs:/opt/selenoid/logs"
-    environment:
-      - OVERRIDE_VIDEO_OUTPUT_DIR=/c/etc/selenoid/video
-    command: ["-conf", "/etc/selenoid/browser.json", "-container-network", "selenoid"]
+      - "./selenoid/browsers.json:/etc/selenoid/browsers.json:ro"    #тут должен лежать browsers.json с настройками браузера
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: ["-conf", "/etc/selenoid/browsers.json", "-container-network", "selenoid"]
 
   # Имя и описание контейнера ui для селеноида
   selenoid-ui:
@@ -38,20 +34,22 @@ services:
     command: ["--selenoid-uri", "http://selenoid:4444"]
 
   test:
-    image: "test"
-    container_name: test
-    volumes:
-      - ".:/app"
+    build: .
+    container_name: test_docker
     # Какие контейнеры нужно запустить до старта этого контейнера:
     depends_on:
       - selenoid
     networks:
       - selenoid
-    command: ["pytest"]
+    tty: true
+    environment:
+      SELENOID_URI: http://selenoid:4444/wd/hub
+      BROWSER: chrome
+      BROWSER_VERSION: 128.0
+    volumes:
+      - ./reports:/app/reports
+    command: ["pytest", "-v", "--alluredir=reports/allure-results"]
 
-# Регистрация новой сети:
-networks:
-  selenoid:
-    name: selenoid 
-    external: true
-    
+  networks:
+    selenoid:
+    name: selenoid
