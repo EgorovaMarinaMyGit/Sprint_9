@@ -1,13 +1,11 @@
 import pytest
 import random
-import string
 from selenium import webdriver
-from pages.base_page import BasePage
 from pages.create_account_page import CreateAccountPage
 from pages.login_page import LoginPage
 from pages.create_recipe_page import CreateRecipePage
-from locators.login_page_locators import LoginPageLocators
 from data import LOGIN_PAGE_URL, email, password
+from helper.helper_random import generate_random_string
 
 
 # вспомогательная функция для настройки браузера
@@ -46,9 +44,6 @@ def create_recipe_page(driver):
 # фикстура генерации данных для регистрации пользователя
 @pytest.fixture()
 def generate_user_data():
-    # генерируем уникальные данные для пользователя
-    def generate_random_string(length):
-        return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
     
     first_name = generate_random_string(10)
     second_name = generate_random_string(10)
@@ -60,19 +55,10 @@ def generate_user_data():
 
 # фикстура создания аккаунта
 @pytest.fixture()
-def create_account(login_page, generate_user_data):
+def create_account(create_account_page, generate_user_data):
         first_name, second_name, user_name, email, password = generate_user_data
-
-        login_page.go_to_url(LOGIN_PAGE_URL)
-        login_page.click_to_element(LoginPageLocators.TITLE_CREATE_ACCOUNT)
-        login_page.find_element_with_wait(LoginPageLocators.TITLE_REGISTRATION)
-        login_page.add_text_to_element(LoginPageLocators.FIRST_NAME_FIELD, first_name)
-        login_page.add_text_to_element(LoginPageLocators.SECOND_NAME_FIELD, second_name)
-        login_page.add_text_to_element(LoginPageLocators.USER_NAME_FIELD, user_name)
-        login_page.add_text_to_element(LoginPageLocators.EMAIL_FIELD, email)
-        login_page.add_text_to_element(LoginPageLocators.PASSWORD_FIELD, password)
-        login_page.click_to_element(LoginPageLocators.CREATE_ACCOUNT_BUTTON)
-        login_page.find_element_with_wait(LoginPageLocators.EMAIL_FIELD)
+        create_account_page.go_to_create_account_page()   
+        create_account_page.fill_in_registration_fields(first_name, second_name, user_name, email, password)
         return email, password
 
 
@@ -80,18 +66,12 @@ def create_account(login_page, generate_user_data):
 @pytest.fixture()
 def login_user(login_page):
     login_page.go_to_login_page()
-    login_page.add_text_to_element(LoginPageLocators.EMAIL_FIELD, email)
-    login_page.add_text_to_element(LoginPageLocators.PASSWORD_FIELD, password)
-    login_page.click_to_element(LoginPageLocators.ENTER_BUTTON)
-    login_page.find_element_with_wait(LoginPageLocators.TITLE_CREATE_RECIPE)
+    login_page.fill_email_and_password(email, password)
 
 
 # фикстура генерации данных для рецепта
 @pytest.fixture()
 def generate_recipe_data():
-    # генерируем уникальные данные для рецепта (текст)
-    def generate_random_string(length):
-        return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
 
     recipe_name = generate_random_string(8)
     grams =  random.randint(1, 100)

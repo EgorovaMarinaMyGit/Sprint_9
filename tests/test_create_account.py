@@ -1,4 +1,5 @@
 import allure
+from data import LOGIN_PAGE_URL
 
 
 class TestCreateAccount:
@@ -8,9 +9,8 @@ class TestCreateAccount:
         first_name, second_name, user_name, email, password = generate_user_data
         create_account_page.go_to_create_account_page()
         create_account_page.fill_in_registration_fields(first_name, second_name, user_name, email, password)
-        expected_url = 'https://foodgram-frontend-1.prakticum-team.ru/signin'
 
-        assert create_account_page.url_after_push_create_account() == expected_url
+        assert create_account_page.url_after_push_create_account() == LOGIN_PAGE_URL
 
 
     @allure.title("Проверка отображения формы авторизации после создания аккаунта и нажатия на 'Создать аккаунт'")
@@ -19,6 +19,6 @@ class TestCreateAccount:
         create_account_page.go_to_create_account_page()
         create_account_page.fill_in_registration_fields(first_name, second_name, user_name, email, password)
 
-        assert create_account_page.check_visibility_autorisation_form() is True
+        assert create_account_page.check_visibility_autorisation_form()
 
         

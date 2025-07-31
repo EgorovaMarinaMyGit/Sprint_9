@@ -14,5 +14,5 @@ class CreateRecipePageLocators:
     CREATE_RECIPE_BUTTON = (By.XPATH, "//button[contains(text(),'Создать рецепт')]") # кнопка "Создать рецепт"
     RECIPE_CARD = (By.XPATH, "//div[@class='styles_single-card__1yTTj']") # карточка созданного рецепта
     EDIT_RECIPE = (By.XPATH, "//a[contains(text(),'Редактировать рецепт')]") # кнопка "Редактировать рецепт"
-
+    RECIPE_NAME_HEADER = (By.XPATH, "//h1[contains(text(), '{recipe_name}')]")
   

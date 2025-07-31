@@ -16,3 +16,4 @@ class LoginPageLocators:
     PASSWORD_FIELD = (By.XPATH, "//input[@name='password']") # поле "Пароль"
     CREATE_ACCOUNT_BUTTON = (By.XPATH, "//button[contains(text(),'Создать аккаунт')]") # кнопка "Создать аккаунт"
     TITLE_CREATE_RECIPE = (By.XPATH, "//a[contains(text(),'Создать рецепт')]") # надпись "Создать рецепт"
+    TITLE_ENTER_ON_WEBSITE = (By.XPATH, "//h1[contains(text(),'Войти на сайт')]") # надпись "Войти на сайт"

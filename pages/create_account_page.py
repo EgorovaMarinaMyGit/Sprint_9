@@ -20,12 +20,13 @@ class CreateAccountPage(BasePage):
         self.add_text_to_element(CreateAccountPageLocators.USER_NAME_FIELD, user_name)
         self.add_text_to_element(CreateAccountPageLocators.EMAIL_FIELD, email)
         self.add_text_to_element(CreateAccountPageLocators.PASSWORD_FIELD, password)
+        self.find_element_with_wait(CreateAccountPageLocators.CREATE_ACCOUNT_BUTTON)
+        self.click_to_element(CreateAccountPageLocators.CREATE_ACCOUNT_BUTTON)
+        self.find_element_with_wait(CreateAccountPageLocators.TITLE_ENTER_ON_WEBSITE)
         
 
     @allure.step("Проверка URL'а после нажатия на 'Создать аккаунт'")
     def url_after_push_create_account(self):
-        self.find_element_with_wait(CreateAccountPageLocators.CREATE_ACCOUNT_BUTTON)
-        self.click_to_element(CreateAccountPageLocators.CREATE_ACCOUNT_BUTTON)
         self.find_element_with_wait(CreateAccountPageLocators.TITLE_ENTER_ON_WEBSITE)
         return self.get_current_url()
 

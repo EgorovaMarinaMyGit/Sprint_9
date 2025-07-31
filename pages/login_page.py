@@ -4,7 +4,7 @@ from locators.login_page_locators import LoginPageLocators
 from data import LOGIN_PAGE_URL
 
 
-class LoginPage(BasePage):
+class LoginPage(BasePage): 
 
     @allure.step("Перейти на страницу авторизации")
     def go_to_login_page(self):
@@ -28,3 +28,4 @@ class LoginPage(BasePage):
     def check_visibility_exit_button(self):
         self.find_element_with_wait(LoginPageLocators.EXIT_BUTTON)
         return self.check_displaying_of_element(LoginPageLocators.EXIT_BUTTON)
+    
